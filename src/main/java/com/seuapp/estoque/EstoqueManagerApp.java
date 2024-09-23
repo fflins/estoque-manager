@@ -13,10 +13,10 @@ public class EstoqueManagerApp {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Escolha uma ação: (1) Adicionar Produto (2) Remover Produto (3) Sair");
+            System.out.println("Escolha uma ação: (1) Adicionar Produto (2) Remover Produto (3) Consultar produtos (4) Consultar Histórico  (5) Sair");
             int escolha = Integer.parseInt(scanner.nextLine());
 
-            if (escolha == 3) {
+            if (escolha == 5) {
                 break;
             }
 
@@ -44,9 +44,11 @@ public class EstoqueManagerApp {
                 // Remove o produto e registra a saída automaticamente
                 produtoDAO.removerProduto(codigo, 1);
                 System.out.println("Produto removido.");
-            } else {
-                System.out.println("Opção inválida.");
-            }
+            } 
+            else if (escolha == 3){produtoDAO.exibirProdutos();}
+            else if (escolha == 4){produtoDAO.exibirMovimentacoes();}
+            else if (escolha == 5){System.exit(0);}
+            else System.out.println("Opção inválida.");
         }
 
         emf.close();
