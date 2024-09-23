@@ -1,49 +1,55 @@
 package com.seuapp.estoque;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+import java.util.Scanner;
 
 public class EstoqueManagerApp {
 
     public static void main(String[] args) {
-        // Cria uma fábrica de gerenciador de entidades
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("estoquePU");
-        // Cria um gerenciador de entidades
-        EntityManager em = emf.createEntityManager();
-        
-        // Cria uma transação
-        EntityTransaction transaction = em.getTransaction();
-        
-        try {
-            // Inicia a transação
-            transaction.begin();
+        ProdutoDAO produtoDAO = new ProdutoDAO();
 
-            // Cria um novo produto
-            Produto produto = new Produto();
-            produto.setCodigo("123");
-            produto.setNome("Produto Teste");
-            produto.setDescricao("Descrição do produto teste.");
+        Scanner scanner = new Scanner(System.in);
 
-            // Persiste o produto no banco de dados
-            em.persist(produto);
+        while (true) {
+            System.out.println("Escolha uma ação: (1) Adicionar Produto (2) Remover Produto (3) Sair");
+            int escolha = Integer.parseInt(scanner.nextLine());
 
-            // Commit da transação
-            transaction.commit();
-            
-            System.out.println("Produto salvo com sucesso!");
-
-        } catch (Exception e) {
-            // Rollback em caso de erro
-            if (transaction.isActive()) {
-                transaction.rollback();
+            if (escolha == 3) {
+                break;
             }
-            e.printStackTrace();
-        } finally {
-            // Fecha o gerenciador de entidades
-            em.close();
-            emf.close();
+
+            if (escolha == 1) {
+
+                System.out.println("Insira o código do produto:");
+                String codigo = scanner.nextLine();
+    
+                System.out.println("Insira o nome do produto:");
+                String nome = scanner.nextLine();
+    
+                System.out.println("Insira a descrição do produto:");
+                String descricao = scanner.nextLine();
+    
+                Produto produto = new Produto(codigo, nome, descricao);
+                // Adiciona produto e registra entrada automaticamente
+                produtoDAO.adicionarProduto(produto, 1);
+
+                System.out.println("Produto adicionado.");
+            } else if (escolha == 2) {
+
+                System.out.println("Insira o código do produto:");
+                String codigo = scanner.nextLine();
+    
+                // Remove o produto e registra a saída automaticamente
+                produtoDAO.removerProduto(codigo, 1);
+                System.out.println("Produto removido.");
+            } else {
+                System.out.println("Opção inválida.");
+            }
         }
+
+        emf.close();
+        scanner.close();
     }
 }
