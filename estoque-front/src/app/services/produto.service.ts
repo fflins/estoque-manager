@@ -26,4 +26,5 @@ export class ProdutoService {
     const url = `${this.apiUrl}/${codigo}`;
     return this.http.delete<any>(url);
   }
+  
 }

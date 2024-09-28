@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <th>Produto</th>
+      <th>Tipo</th>
+      <th>Quantidade</th>
+      <th>Data e Hora</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let movimentacao of movimentacoes">
+      <td>{{ movimentacao.produtoNome }}</td>
+      <td>{{ movimentacao.tipo }}</td>
+      <td>{{ movimentacao.quantidade }}</td>
+      <td>{{ movimentacao.dataHora | date:'dd/MM/yyyy HH:mm:ss' }}</td> <!-- Formato desejado -->
+    </tr>
+  </tbody>
+</table>

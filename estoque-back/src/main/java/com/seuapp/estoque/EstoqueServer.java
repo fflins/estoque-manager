@@ -14,8 +14,11 @@ public class EstoqueServer {
         context.setContextPath("/");
         server.setHandler(context);
 
-        // Adiciona o servlet que gerenciará as requisições
+        // Adiciona o servlet que gerenciará as requisições para produtos
         context.addServlet(new ServletHolder(new ProdutoServlet()), "/produtos/*");
+        
+        // Adiciona o servlet que gerenciará as requisições para movimentações
+        context.addServlet(new ServletHolder(new MovimentacaoServlet()), "/movimentacoes/*");
 
         // Inicia o servidor
         server.start();

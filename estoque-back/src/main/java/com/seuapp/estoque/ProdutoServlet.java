@@ -5,8 +5,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.POST;
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import java.sql.Timestamp;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,26 +20,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import java.util.List;
 
-@WebServlet("/produtos/*")
-public class ProdutoServlet extends HttpServlet {
+@WebServlet("/produtos")
+class ProdutoServlet extends HttpServlet {
 
     // Método doGet para lidar com as requisições GET
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
-        // Lista para armazenar os produtos
         List<Produto> produtos = new ArrayList<>();
 
-        // Conectar ao banco de dados e buscar os produtos
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "root")) {
             String query = "SELECT codigo, nome, descricao FROM Produto";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
-            // Percorrer o resultado e adicionar os produtos à lista
             while (rs.next()) {
                 String codigo = rs.getString("codigo");
                 String nome = rs.getString("nome");
@@ -47,18 +50,16 @@ public class ProdutoServlet extends HttpServlet {
             return;
         }
 
-        // Converte a lista de produtos para JSON usando Jackson
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonResponse = objectMapper.writeValueAsString(produtos);
-
-        // Envia a resposta JSON
         response.getWriter().println(jsonResponse);
     }
 
+    @POST
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
+
         try {
-            // Obtenha os parâmetros do produto (assumindo que o frontend envia JSON)
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = request.getReader().readLine()) != null) {
@@ -66,20 +67,31 @@ public class ProdutoServlet extends HttpServlet {
             }
             String requestData = sb.toString();
 
-            // Parse JSON usando uma biblioteca como Gson
+            // Parse JSON usando Gson
             Gson gson = new Gson();
             Produto produto = gson.fromJson(requestData, Produto.class);
 
             // Insira o produto no banco de dados
-            Connection connection = DatabaseUtils.getConnection(); // Método para obter conexão
-            String sql = "INSERT INTO Produto (nome, descricao, codigo) VALUES (?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, produto.getNome());
-            preparedStatement.setString(2, produto.getDescricao());
-            preparedStatement.setString(3, produto.getCodigo());
-            preparedStatement.executeUpdate();
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "root")) {
+                String sql = "INSERT INTO Produto (nome, descricao, codigo) VALUES (?, ?, ?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, produto.getNome());
+                preparedStatement.setString(2, produto.getDescricao());
+                preparedStatement.setString(3, produto.getCodigo());
+                preparedStatement.executeUpdate();
+            }
 
-            // Retorne uma resposta de sucesso
+            // Registra a movimentação de entrada
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "root")) {
+                String sqlMovimentacao = "INSERT INTO Movimentacao (produtoNome, tipo, quantidade, dataHora) VALUES (?, ?, ?, ?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sqlMovimentacao);
+                preparedStatement.setString(1, produto.getNome());
+                preparedStatement.setString(2, "entrada");
+                preparedStatement.setInt(3, 1); // Supondo uma entrada de quantidade 1
+                preparedStatement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+                preparedStatement.executeUpdate();
+            }
+
             response.setStatus(HttpServletResponse.SC_CREATED);
             response.getWriter().println("{\"message\":\"Produto inserido com sucesso\"}");
         } catch (SQLException e) {
@@ -89,22 +101,48 @@ public class ProdutoServlet extends HttpServlet {
         }
     }
 
-    @Override
+    @DELETE
 protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String codigo = request.getPathInfo() != null ? request.getPathInfo().substring(1) : null; // Extrai o código da URL
+    String codigo = request.getPathInfo().substring(1);
 
     if (codigo == null || codigo.isEmpty()) {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Código do produto é obrigatório");
         return;
     }
 
+    String produtoNome = null;
+
     try {
-        Connection connection = DatabaseUtils.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("DELETE FROM Produto WHERE codigo = ?");
-        stmt.setString(1, codigo);
-        int affectedRows = stmt.executeUpdate();
+        // Conectar ao banco de dados
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "root");
+        
+        // Primeiro, buscamos o nome do produto baseado no código
+        PreparedStatement stmtProduto = connection.prepareStatement("SELECT nome FROM Produto WHERE codigo = ?");
+        stmtProduto.setString(1, codigo);
+        ResultSet rsProduto = stmtProduto.executeQuery();
+
+        if (rsProduto.next()) {
+            produtoNome = rsProduto.getString("nome");
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Produto não encontrado");
+            return;
+        }
+
+        // Agora, removemos o produto
+        PreparedStatement stmtDelete = connection.prepareStatement("DELETE FROM Produto WHERE codigo = ?");
+        stmtDelete.setString(1, codigo);
+        int affectedRows = stmtDelete.executeUpdate();
 
         if (affectedRows > 0) {
+            // Registra a movimentação de saída
+            String sqlMovimentacao = "INSERT INTO Movimentacao (produtoNome, tipo, quantidade, dataHora) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlMovimentacao);
+            preparedStatement.setString(1, produtoNome); // Agora usamos o nome do produto
+            preparedStatement.setString(2, "saida");
+            preparedStatement.setInt(3, 1); // Supondo uma saída de quantidade 1
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            preparedStatement.executeUpdate();
+
             response.setStatus(HttpServletResponse.SC_OK); // 200 OK
             response.getWriter().println("{\"message\":\"Produto removido com sucesso\"}"); // Mensagem de sucesso
         } else {
@@ -115,4 +153,5 @@ protected void doDelete(HttpServletRequest request, HttpServletResponse response
         e.printStackTrace();
     }
 }
+
 }
