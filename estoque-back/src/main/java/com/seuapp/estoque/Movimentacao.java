@@ -4,27 +4,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Column;
+
 import java.time.LocalDateTime;
 
 @Entity
 public class Movimentacao {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // ID único para movimentação
-    
-    @Column(nullable = false)
-    private String produtoNome; // Apenas o nome do produto
-    
-    @Column(nullable = false)
-    private String tipo; // "entrada" ou "saida"
-    
-    @Column(nullable = false)
+    private Long id;
+    private String produtoNome;
+    private String tipo;
     private int quantidade;
-    
-    @Column(nullable = false)
-    private LocalDateTime dataHora; // Data da movimentação
+    private LocalDateTime dataHora;
 
     public Movimentacao() {}
 
@@ -35,6 +27,7 @@ public class Movimentacao {
         this.dataHora = dataHora;
     }
 
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -74,8 +67,4 @@ public class Movimentacao {
     public void setDataHora(LocalDateTime dataHora) {
         this.dataHora = dataHora;
     }
-
-    
-
-
 }

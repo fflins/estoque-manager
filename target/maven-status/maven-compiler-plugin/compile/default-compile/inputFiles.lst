@@ -1,6 +1,6 @@
-/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/ProdutoDAO.java
-/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/ProdutoResource.java
-/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/Movimentacao.java
-/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/CORSFilter.java
-/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/EstoqueManagerApp.java
-/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/Produto.java
+C:\Users\Eudson Cordeiro\OneDrive\Desktop\controle_de_estoque\estoque-manager\src\main\java\com\seuapp\estoque\controllers\ProdutoController.java
+C:\Users\Eudson Cordeiro\OneDrive\Desktop\controle_de_estoque\estoque-manager\src\main\java\com\seuapp\estoque\EstoqueManagerApp.java
+C:\Users\Eudson Cordeiro\OneDrive\Desktop\controle_de_estoque\estoque-manager\src\main\java\com\seuapp\estoque\ProdutoDAO.java
+C:\Users\Eudson Cordeiro\OneDrive\Desktop\controle_de_estoque\estoque-manager\src\main\java\com\seuapp\estoque\Produto.java
+C:\Users\Eudson Cordeiro\OneDrive\Desktop\controle_de_estoque\estoque-manager\src\main\java\com\seuapp\estoque\Movimentacao.java
+C:\Users\Eudson Cordeiro\OneDrive\Desktop\controle_de_estoque\estoque-manager\src\main\java\com\seuapp\estoque\repositories\ProdutoRepository.java

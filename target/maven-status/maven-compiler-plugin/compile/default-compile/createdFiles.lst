@@ -1,6 +1,6 @@
-com/seuapp/estoque/Movimentacao.class
-com/seuapp/estoque/ProdutoResource.class
-com/seuapp/estoque/ProdutoDAO.class
-com/seuapp/estoque/Produto.class
-com/seuapp/estoque/EstoqueManagerApp.class
-com/seuapp/estoque/CORSFilter.class
+com\seuapp\estoque\EstoqueManagerApp.class
+com\seuapp\estoque\ProdutoDAO.class
+com\seuapp\estoque\repositories\ProdutoRepository.class
+com\seuapp\estoque\ProdutoController.class
+com\seuapp\estoque\Produto.class
+com\seuapp\estoque\Movimentacao.class
