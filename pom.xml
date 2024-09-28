@@ -63,17 +63,12 @@
         <version>2.9.0</version>
     </dependency>
 
-
-    <dependency>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-server</artifactId>
-        <version>11.0.0</version>
-    </dependency>
     <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-servlet</artifactId>
-        <version>11.0.0</version>
+        <version>11.0.14</version>
     </dependency>
+
     <dependency>
         <groupId>jakarta.servlet</groupId>
         <artifactId>jakarta.servlet-api</artifactId>
@@ -84,7 +79,7 @@
     <dependency>
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-jsr310</artifactId>
-        <version>2.13.3</version> <!-- Certifique-se de usar a mesma versão do Jackson já utilizada no projeto -->
+        <version>2.14.2</version>
     </dependency>
 
 
