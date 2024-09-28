@@ -1,3 +1,6 @@
-/media/filippelins/C65CBF5D5CBF46C9/Faculdade/materias/6periodo/GP/estoque-manager/src/main/java/com/seuapp/estoque/EstoqueManagerApp.java
-/media/filippelins/C65CBF5D5CBF46C9/Faculdade/materias/6periodo/GP/estoque-manager/src/main/java/com/seuapp/estoque/ProdutoDAO.java
-/media/filippelins/C65CBF5D5CBF46C9/Faculdade/materias/6periodo/GP/estoque-manager/src/main/java/com/seuapp/estoque/Produto.java
+/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/ProdutoDAO.java
+/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/ProdutoResource.java
+/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/Movimentacao.java
+/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/CORSFilter.java
+/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/EstoqueManagerApp.java
+/media/filippelins/dados/Faculdade/materias/6periodo/GP/estoque-manager/estoque-back/src/main/java/com/seuapp/estoque/Produto.java

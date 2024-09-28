@@ -29,6 +29,13 @@
         <version>3.1.0</version>
     </dependency>
 
+
+    <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+
     <!-- MySQL Connector -->
     <dependency>
         <groupId>mysql</groupId>
@@ -36,9 +43,46 @@
         <version>8.0.32</version>
     </dependency>
 
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.13.3</version> <!-- Use a versão mais recente disponível -->
+    </dependency>
+
+    <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.9.0</version>
+    </dependency>
+
+
+    <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>11.0.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-servlet</artifactId>
+        <version>11.0.0</version>
+    </dependency>
+    <dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>5.0.0</version>
+        <scope>provided</scope>
+    </dependency>
+
+
   </dependencies>
 
   <build>
+    <sourceDirectory>${project.basedir}/estoque-back/src/main/java</sourceDirectory>
+    <resources>
+        <resource>
+            <directory>${project.basedir}/estoque-back/src/main/resources</directory>
+        </resource>
+    </resources>
     <plugins>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -50,6 +94,7 @@
             </configuration>
         </plugin>
     </plugins>
-  </build>
+</build>
+
 
 </project>
