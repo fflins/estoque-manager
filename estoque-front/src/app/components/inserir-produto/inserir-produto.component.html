@@ -9,4 +9,6 @@
   <input id="codigo" formControlName="codigo" type="text" required>
 
   <button type="submit" [disabled]="!produtoForm.valid">Inserir Produto</button>
+
+  <button (click)="voltar()">Voltar</button>
 </form>

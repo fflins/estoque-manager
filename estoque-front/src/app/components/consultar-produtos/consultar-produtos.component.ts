@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProdutoService } from '../../services/produto.service';
 import { Produto } from '../../models/produto.model';
 import { CommonModule } from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-consultar-produtos',
@@ -14,10 +15,14 @@ import { CommonModule } from '@angular/common';
 export class ConsultarProdutosComponent implements OnInit {
   produtos: Produto[] = [];
 
-  constructor(private produtoService: ProdutoService) {}
+  constructor(private produtoService: ProdutoService, private location: Location) {}
 
   ngOnInit(): void {
     this.consultarProdutos();
+  }
+
+  voltar(): void {
+    this.location.back();
   }
 
   consultarProdutos() {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ProdutoService } from '../../services/produto.service';
-
+import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -13,12 +13,19 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class InserirProdutoComponent {
   produtoForm: FormGroup;
 
-  constructor(private produtoService: ProdutoService, private fb: FormBuilder) {
+  
+
+  constructor(private produtoService: ProdutoService, private fb: FormBuilder, private location: Location) {
     this.produtoForm = this.fb.group({
       nome: ['', Validators.required],
       descricao: ['', Validators.required],
       codigo: ['', Validators.required],
     });
+  }
+
+  // Método para voltar à página anterior
+  voltar(): void {
+    this.location.back();
   }
 
   onSubmit() {
