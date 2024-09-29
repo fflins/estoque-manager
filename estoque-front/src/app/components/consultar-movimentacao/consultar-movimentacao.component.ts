@@ -3,6 +3,7 @@ import { MovimentacaoService } from '../../services/movimentacao.service';
 import { CommonModule } from '@angular/common';
 import { Movimentacao } from '../../models/movimentacao.model';
 import { DatePipe } from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-consultar-movimentacoes',
@@ -14,7 +15,11 @@ import { DatePipe } from '@angular/common';
 export class ConsultarMovimentacaoComponent implements OnInit {
   movimentacoes: Movimentacao[] = [];
 
-  constructor(private movimentacaoService: MovimentacaoService) {}
+  constructor(private movimentacaoService: MovimentacaoService, private location: Location) {}
+
+  voltar(): void {
+    this.location.back();
+  }
 
   ngOnInit(): void {
     this.consultarMovimentacoes();
@@ -28,4 +33,6 @@ export class ConsultarMovimentacaoComponent implements OnInit {
       }));
     });
   }
+
+
 }

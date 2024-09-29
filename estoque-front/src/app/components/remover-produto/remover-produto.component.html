@@ -4,9 +4,11 @@
   <input id="codigo" formControlName="codigo" type="text" required />
   
   <button type="submit" [disabled]="removerForm.invalid">Remover</button>
+  <button (click)="voltar()">Voltar</button>
   
   <div *ngIf="feedbackMessage">
     <p>{{ feedbackMessage }}</p> 
   </div>
+
   
 </form>

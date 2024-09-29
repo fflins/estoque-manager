@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProdutoService } from '../../services/produto.service';
 import { CommonModule } from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-remover-produto',
@@ -13,7 +14,7 @@ export class RemoverProdutoComponent {
   removerForm: FormGroup;
   feedbackMessage: string = '';
 
-  constructor(private fb: FormBuilder, private produtoService: ProdutoService) {
+  constructor(private fb: FormBuilder, private produtoService: ProdutoService, private location: Location) {
     this.removerForm = this.fb.group({
       codigo: ['', Validators.required],
     });
@@ -30,6 +31,10 @@ export class RemoverProdutoComponent {
         this.feedbackMessage = err.error.message || 'Erro ao remover produto'; // Mensagem de erro
       }
     });
+  }
+
+  voltar(): void {
+    this.location.back();
   }
 
 
