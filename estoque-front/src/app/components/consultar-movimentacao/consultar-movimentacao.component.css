@@ -1,0 +1,70 @@
+
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #130544; 
+  }
+  
+  
+  .table-container {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1200px; 
+    padding: 20px;
+    background-color: #fafafa;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+  }
+  
+  
+  .movimentacoes-tabela {
+    background-color: #fff;
+    width: 250px; 
+    margin: 10px; 
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    transition: box-shadow 0.3s ease;
+    flex-grow: 1;
+  }
+  
+  .card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+  }
+  
+  
+  .card-item {
+    margin: 8px 0;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .card-item strong {
+    color: #130544; 
+  }
+  
+  
+  .back-btn {
+    margin: 20px auto;
+    background-color: #130544;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .back-btn:hover {
+    background-color: #e53935; 
+  }
+  

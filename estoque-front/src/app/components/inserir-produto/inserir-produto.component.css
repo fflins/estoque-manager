@@ -1,0 +1,81 @@
+.produto-form {
+    max-width: 1000px; 
+    margin: 0 auto;
+    background-color: #f0f0f0; 
+    padding: 80px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  .produto-form:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2); 
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+  
+  .form-control:focus {
+    border-color: #4c51af;  
+    outline: none;
+    box-shadow: 0 0 10px rgba(97, 76, 175, 0.2);  
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  
+  .submit-btn {
+    background-color: #52b7d1;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;  
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-btn:disabled {
+    background-color: #b0b0b0;
+    cursor: not-allowed;
+  }
+  
+  .back-btn {
+    background-color: #130544;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-btn:hover {
+    background-color: #130544; 
+  }
+  
+  .back-btn:hover {
+    background-color: #e53935;
+  }
+  

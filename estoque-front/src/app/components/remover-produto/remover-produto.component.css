@@ -1,0 +1,100 @@
+/* Estilos aprimorados para o formulário */
+.produto-form {
+    max-width: 450px;  /* Um pouco maior que o anterior */
+    margin: 0 auto;
+    background-color: #fafafa;  /* Fundo claro e neutro */
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  .produto-form:hover {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2); /* Efeito hover */
+  }
+  
+  .form-group {
+    margin-bottom: 25px; /* Mais espaçamento entre o label e o campo */
+  }
+  
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+    color: #333; /* Tom neutro no texto */
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 14px;  
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.2s;
+  }
+  
+  .form-control:focus {
+    border-color: #3ca0b5; /* Azul harmonioso */
+    outline: none;
+    box-shadow: 0 0 10px rgba(60, 160, 181, 0.3);
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Aumenta o espaço entre os botões */
+    margin-top: 20px; /* Margem para separar os botões dos campos */
+  }
+  
+  .submit-btn {
+    background-color: #130544; /* Cor verde para ação de remover */
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 48%; /* Ambos os botões terão o mesmo tamanho */
+    transition: background-color 0.3s;
+  }
+  
+  .submit-btn:disabled {
+    background-color: #b0b0b0; /* Tom de cinza para botão desativado */
+    cursor: not-allowed;
+  }
+  
+  .back-btn {
+    background-color: #130544; /* Vermelho para voltar */
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 48%; /* Ambos os botões terão o mesmo tamanho */
+    transition: background-color 0.3s;
+  }
+  
+  .submit-btn:hover {
+    background-color: #130544; /* Verde mais escuro no hover */
+  }
+  
+  .back-btn:hover {
+    background-color: #e53935; /* Vermelho mais escuro no hover */
+  }
+  
+  .feedback-message {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+  }
+  
+  /* Título do formulário */
+  .form-title {
+    text-align: center;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 20px;
+  }
+  

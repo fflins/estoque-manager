@@ -33,7 +33,7 @@ class ProdutoServlet extends HttpServlet {
 
         List<Produto> produtos = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "root")) {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "1212")) {
             String query = "SELECT codigo, nome, descricao FROM Produto";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
@@ -72,7 +72,7 @@ class ProdutoServlet extends HttpServlet {
             Produto produto = gson.fromJson(requestData, Produto.class);
 
             // Insira o produto no banco de dados
-            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "root")) {
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "1212")) {
                 String sql = "INSERT INTO Produto (nome, descricao, codigo) VALUES (?, ?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, produto.getNome());
@@ -82,7 +82,7 @@ class ProdutoServlet extends HttpServlet {
             }
 
             // Registra a movimentação de entrada
-            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "root")) {
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "1212")) {
                 String sqlMovimentacao = "INSERT INTO Movimentacao (produtoNome, tipo, quantidade, dataHora) VALUES (?, ?, ?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(sqlMovimentacao);
                 preparedStatement.setString(1, produto.getNome());
@@ -114,9 +114,8 @@ protected void doDelete(HttpServletRequest request, HttpServletResponse response
 
     try {
         // Conectar ao banco de dados
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "root");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "1212");
         
-        // Primeiro, buscamos o nome do produto baseado no código
         PreparedStatement stmtProduto = connection.prepareStatement("SELECT nome FROM Produto WHERE codigo = ?");
         stmtProduto.setString(1, codigo);
         ResultSet rsProduto = stmtProduto.executeQuery();
@@ -128,7 +127,6 @@ protected void doDelete(HttpServletRequest request, HttpServletResponse response
             return;
         }
 
-        // Agora, removemos o produto
         PreparedStatement stmtDelete = connection.prepareStatement("DELETE FROM Produto WHERE codigo = ?");
         stmtDelete.setString(1, codigo);
         int affectedRows = stmtDelete.executeUpdate();

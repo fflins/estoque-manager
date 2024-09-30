@@ -1,14 +1,21 @@
-<form [formGroup]="produtoForm" (ngSubmit)="onSubmit()">
-  <label for="nome">Nome:</label>
-  <input id="nome" formControlName="nome" type="text" required>
+<form [formGroup]="produtoForm" (ngSubmit)="onSubmit()" class="produto-form">
+  <div class="form-group">
+    <label for="nome">Nome:</label>
+    <input id="nome" formControlName="nome" type="text" required class="form-control">
+  </div>
 
-  <label for="descricao">Descrição:</label>
-  <input id="descricao" formControlName="descricao" type="text" required>
+  <div class="form-group">
+    <label for="descricao">Descrição:</label>
+    <input id="descricao" formControlName="descricao" type="text" required class="form-control">
+  </div>
 
-  <label for="codigo">Código:</label>
-  <input id="codigo" formControlName="codigo" type="text" required>
+  <div class="form-group">
+    <label for="codigo">Código:</label>
+    <input id="codigo" formControlName="codigo" type="text" required class="form-control">
+  </div>
 
-  <button type="submit" [disabled]="!produtoForm.valid">Inserir Produto</button>
-
-  <button (click)="voltar()">Voltar</button>
+  <div class="button-group">
+    <button type="submit" [disabled]="!produtoForm.valid" class="submit-btn">Inserir Produto</button>
+    <button type="button" (click)="voltar()" class="back-btn">Voltar</button>
+  </div>
 </form>

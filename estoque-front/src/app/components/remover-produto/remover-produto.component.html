@@ -1,14 +1,16 @@
-<h2>Remover Produto</h2>
-<form [formGroup]="removerForm" (ngSubmit)="onSubmit()">
-  <label for="codigo">Código do Produto:</label>
-  <input id="codigo" formControlName="codigo" type="text" required />
+<h2 class="form-title">Remover Produto</h2>
+<form [formGroup]="removerForm" (ngSubmit)="onSubmit()" class="produto-form">
+  <div class="form-group">
+    <label for="codigo">Código do Produto:</label>
+    <input id="codigo" formControlName="codigo" type="text" required class="form-control" />
+  </div>
   
-  <button type="submit" [disabled]="removerForm.invalid">Remover</button>
-  <button (click)="voltar()">Voltar</button>
+  <div class="button-group">
+    <button type="submit" [disabled]="removerForm.invalid" class="submit-btn">Remover</button>
+    <button type="button" (click)="voltar()" class="back-btn">Voltar</button>
+  </div>
   
-  <div *ngIf="feedbackMessage">
+  <div *ngIf="feedbackMessage" class="feedback-message">
     <p>{{ feedbackMessage }}</p> 
   </div>
-
-  
 </form>

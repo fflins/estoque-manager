@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-consultar-movimentacoes',
   templateUrl: './consultar-movimentacao.component.html',
+  styleUrl: './consultar-movimentacao.component.css',
   standalone: true,
   imports: [CommonModule, DatePipe],
 })
