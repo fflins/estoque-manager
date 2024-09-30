@@ -116,7 +116,6 @@ protected void doDelete(HttpServletRequest request, HttpServletResponse response
         // Conectar ao banco de dados
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "root");
         
-        // Primeiro, buscamos o nome do produto baseado no código
         PreparedStatement stmtProduto = connection.prepareStatement("SELECT nome FROM Produto WHERE codigo = ?");
         stmtProduto.setString(1, codigo);
         ResultSet rsProduto = stmtProduto.executeQuery();
@@ -128,7 +127,6 @@ protected void doDelete(HttpServletRequest request, HttpServletResponse response
             return;
         }
 
-        // Agora, removemos o produto
         PreparedStatement stmtDelete = connection.prepareStatement("DELETE FROM Produto WHERE codigo = ?");
         stmtDelete.setString(1, codigo);
         int affectedRows = stmtDelete.executeUpdate();

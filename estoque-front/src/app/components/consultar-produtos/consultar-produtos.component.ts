@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-consultar-produtos',
   templateUrl: './consultar-produtos.component.html',
-  styleUrls: ['./consultar-produtos.component.css'],
+  styleUrl: './consultar-produtos.component.css',
   standalone: true,
   imports: [CommonModule], 
 })
