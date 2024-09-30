@@ -26,7 +26,7 @@ public class MovimentacaoServlet extends HttpServlet {
 
         List<Movimentacao> movimentacoes = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "root")) {
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "1212")) {
             String query = "SELECT produtoNome, tipo, quantidade, dataHora FROM Movimentacao";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();

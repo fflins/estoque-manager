@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-remover-produto',
   templateUrl: './remover-produto.component.html',
+  styleUrl: './remover-produto.component.css',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
 })
@@ -22,6 +23,7 @@ export class RemoverProdutoComponent {
 
   onSubmit() {
     const codigo = this.removerForm.get('codigo')?.value;
+
 
     this.produtoService.removerProduto(codigo).subscribe({
       next: (response) => {

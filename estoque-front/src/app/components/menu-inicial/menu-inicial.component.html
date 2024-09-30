@@ -1,7 +1,9 @@
-<h1>Menu Inicial</h1>
-<div class="menu-opcoes">
-  <button routerLink="/inserir-produto">Inserir Produto</button>
-  <button routerLink="/consultar-produtos">Consultar Produtos</button>
-  <button routerLink="/remover-produto">Remover Produto</button>
-  <button routerLink="/consultar-movimentacoes">Consultar Movimentações</button>
+<div class="container">
+  <h1>Gerenciamento de Estoque</h1>
+  <div class="menu">
+    <button (click)="irParaInserir()">Inserir Produto</button>
+    <button (click)="irParaConsultar()">Consultar Produtos</button>
+    <button (click)="irParaRemover()">Remover Produto</button>
+    <button (click)="irParaHistorico()">Consultar Movimentações</button>
+  </div>
 </div>

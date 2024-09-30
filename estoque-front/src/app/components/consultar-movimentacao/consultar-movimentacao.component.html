@@ -1,21 +1,21 @@
-<table>
-  <thead>
-    <tr>
-      <th>Produto</th>
-      <th>Tipo</th>
-      <th>Quantidade</th>
-      <th>Data e Hora</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let movimentacao of movimentacoes">
-      <td>{{ movimentacao.produtoNome }}</td>
-      <td>{{ movimentacao.tipo }}</td>
-      <td>{{ movimentacao.quantidade }}</td>
-      <td>{{ movimentacao.dataHora | date:'dd/MM/yyyy HH:mm:ss' }}</td> <!-- Formato desejado -->
-    </tr>
-  </tbody>
-
-  <button (click)="voltar()">Voltar</button>
-  
-</table>
+<div class="table-container">
+  <table class="movimentacoes-tabela">
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Tipo</th>
+        <th>Quantidade</th>
+        <th>Data e Hora</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let movimentacao of movimentacoes">
+        <td>{{ movimentacao.produtoNome }}</td>
+        <td>{{ movimentacao.tipo }}</td>
+        <td>{{ movimentacao.quantidade }}</td>
+        <td>{{ movimentacao.dataHora | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <button (click)="voltar()" class="back-btn">Voltar</button>
+</div>

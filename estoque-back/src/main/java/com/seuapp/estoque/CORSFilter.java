@@ -1,17 +1,28 @@
 package com.seuapp.estoque;
 
-import jakarta.ws.rs.ext.Provider;
-import jakarta.ws.rs.container.ContainerResponseFilter;
-import jakarta.ws.rs.container.ContainerRequestContext;
-import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletResponse;
 
-@Provider
-public class CORSFilter implements ContainerResponseFilter {
+import java.io.IOException;
+
+public class CORSFilter implements Filter {
+
     @Override
-    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
-        responseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
-        responseContext.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
-        responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
-        responseContext.getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    public void init(FilterConfig filterConfig) throws ServletException {
+        // No initialization required
     }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        response.setHeader("Access-Control-Allow-Origin", "/*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    @Override
+    public void destroy() {
+        // No cleanup required
+}
 }

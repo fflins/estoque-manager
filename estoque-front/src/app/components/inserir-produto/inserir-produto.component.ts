@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 @Component({
   selector: 'app-inserir-produto',
   templateUrl: './inserir-produto.component.html',
-  styleUrls: ['./inserir-produto.component.css'],
+  styleUrl: './inserir-produto.component.css',
   standalone: true,
   imports: [ReactiveFormsModule]
 })

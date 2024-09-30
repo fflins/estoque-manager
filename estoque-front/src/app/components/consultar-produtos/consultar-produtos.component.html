@@ -1,22 +1,21 @@
-<div>
-    <h2>Consultar Produtos</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Código</th>
-          <th>Nome</th>
-          <th>Descrição</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let produto of produtos">
-          <td>{{ produto.codigo }}</td>
-          <td>{{ produto.nome }}</td>
-          <td>{{ produto.descricao }}</td>
-        </tr>
-      </tbody>
-    </table>
+<div class="table-container">
+  <h2>Consultar Produtos</h2>
+  <table class="produtos-tabela">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Descrição</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let produto of produtos">
+        <td>{{ produto.codigo }}</td>
+        <td>{{ produto.nome }}</td>
+        <td>{{ produto.descricao }}</td>
+      </tr>
+    </tbody>
+  </table>
 
-  <button (click)="voltar()">Voltar</button>
-  </div>
-  
+  <button (click)="voltar()" class="back-btn">Voltar</button>
+</div>
