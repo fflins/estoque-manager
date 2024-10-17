@@ -14,6 +14,11 @@
     <input id="codigo" formControlName="codigo" type="text" required class="form-control">
   </div>
 
+  <div class="form-group">
+    <label for="quantidade">Quantidade:</label>
+    <input id="quantidade" formControlName="quantidade" type="number" required min="1" class="form-control">
+  </div>
+
   <div class="button-group">
     <button type="submit" [disabled]="!produtoForm.valid" class="submit-btn">Inserir Produto</button>
     <button type="button" (click)="voltar()" class="back-btn">Voltar</button>

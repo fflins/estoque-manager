@@ -22,9 +22,14 @@ export class ProdutoService {
   }
 
   // Método para remover um produto pelo código
-  removerProduto(codigo: string): Observable<any> {
-    const url = `${this.apiUrl}/${codigo}`;
-    return this.http.delete<any>(url);
+  removerProduto(codigo: string, quantidade: number): Observable<any> {
+    const options = {
+      headers: { 'Content-Type': 'application/json' },
+      body: { quantidade },
+      observe: 'response' as 'body' // Garante que a resposta completa seja capturada
+    };
+    return this.http.delete(`${this.apiUrl}/${codigo}`, options);
   }
+  
   
 }

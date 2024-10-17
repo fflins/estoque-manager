@@ -20,6 +20,7 @@ export class InserirProdutoComponent {
       nome: ['', Validators.required],
       descricao: ['', Validators.required],
       codigo: ['', Validators.required],
+      quantidade: [0, [Validators.required, Validators.min(1)]], 
     });
   }
 

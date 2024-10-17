@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
 })
+
 export class RemoverProdutoComponent {
   removerForm: FormGroup;
   feedbackMessage: string = '';
@@ -18,23 +19,34 @@ export class RemoverProdutoComponent {
   constructor(private fb: FormBuilder, private produtoService: ProdutoService, private location: Location) {
     this.removerForm = this.fb.group({
       codigo: ['', Validators.required],
+      quantidade: [1, [Validators.required, Validators.min(1)]],  // Quantidade a ser removida
     });
+    
   }
 
   onSubmit() {
     const codigo = this.removerForm.get('codigo')?.value;
-
-
-    this.produtoService.removerProduto(codigo).subscribe({
+    const quantidade = this.removerForm.get('quantidade')?.value;
+  
+    if (!quantidade || quantidade <= 0) {
+      this.feedbackMessage = 'Informe uma quantidade válida para remover';
+      return;
+    }
+  
+    this.produtoService.removerProduto(codigo, quantidade).subscribe({
       next: (response) => {
-        this.feedbackMessage = response.message; // Mensagem de sucesso
+        console.log('Remoção realizada:', response); // Log para depuração
+        this.feedbackMessage = response.message; // Exibe a mensagem de sucesso
+        this.removerForm.reset(); // Limpa o formulário após submissão
       },
       error: (err) => {
-        this.feedbackMessage = err.error.message || 'Erro ao remover produto'; // Mensagem de erro
+        console.error('Erro na remoção:', err); // Log de erro para depuração
+        this.feedbackMessage = err.error?.message || 'Erro ao remover produto';
       }
     });
   }
 
+  
   voltar(): void {
     this.location.back();
   }

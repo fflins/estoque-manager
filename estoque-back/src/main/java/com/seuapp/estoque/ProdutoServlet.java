@@ -28,21 +28,25 @@ class ProdutoServlet extends HttpServlet {
 
     // Método doGet para lidar com as requisições GET
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("Teste 1");
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
 
         List<Produto> produtos = new ArrayList<>();
 
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "1212")) {
-            String query = "SELECT codigo, nome, descricao FROM Produto";
+            System.out.println("Teste 2");
+            String query = "SELECT codigo, nome, descricao, quantidade FROM Produto";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 String codigo = rs.getString("codigo");
+                System.out.println(rs.getString("codigo"));
                 String nome = rs.getString("nome");
                 String descricao = rs.getString("descricao");
-                produtos.add(new Produto(codigo, nome, descricao));
+                int quantidade = rs.getInt("quantidade");
+                produtos.add(new Produto(codigo, nome, descricao, quantidade));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,40 +62,45 @@ class ProdutoServlet extends HttpServlet {
     @POST
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
-
+    
         try {
+            // Lê e converte o JSON recebido em objeto Produto
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = request.getReader().readLine()) != null) {
                 sb.append(line);
             }
             String requestData = sb.toString();
-
-            // Parse JSON usando Gson
+    
             Gson gson = new Gson();
             Produto produto = gson.fromJson(requestData, Produto.class);
-
-            // Insira o produto no banco de dados
-            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "1212")) {
-                String sql = "INSERT INTO Produto (nome, descricao, codigo) VALUES (?, ?, ?)";
+    
+            // Insere o produto no banco de dados
+            try (Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/estoque_db", "root", "1212")) {
+    
+                String sql = "INSERT INTO Produto (codigo, nome, descricao, quantidade) VALUES (?, ?, ?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, produto.getNome());
-                preparedStatement.setString(2, produto.getDescricao());
-                preparedStatement.setString(3, produto.getCodigo());
+                preparedStatement.setString(1, produto.getCodigo());
+                preparedStatement.setString(2, produto.getNome());
+                preparedStatement.setString(3, produto.getDescricao());
+                preparedStatement.setInt(4, produto.getQuantidade());  // Insere a quantidade
                 preparedStatement.executeUpdate();
             }
-
+    
             // Registra a movimentação de entrada
-            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "1212")) {
+            try (Connection connection = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/estoque_db", "root", "1212")) {
+    
                 String sqlMovimentacao = "INSERT INTO Movimentacao (produtoNome, tipo, quantidade, dataHora) VALUES (?, ?, ?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(sqlMovimentacao);
                 preparedStatement.setString(1, produto.getNome());
                 preparedStatement.setString(2, "entrada");
-                preparedStatement.setInt(3, 1); // Supondo uma entrada de quantidade 1
+                preparedStatement.setInt(3, produto.getQuantidade());  // Registra a quantidade correta
                 preparedStatement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
                 preparedStatement.executeUpdate();
             }
-
+    
             response.setStatus(HttpServletResponse.SC_CREATED);
             response.getWriter().println("{\"message\":\"Produto inserido com sucesso\"}");
         } catch (SQLException e) {
@@ -100,7 +109,6 @@ class ProdutoServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
-
     @DELETE
 protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String codigo = request.getPathInfo().substring(1);
@@ -110,39 +118,57 @@ protected void doDelete(HttpServletRequest request, HttpServletResponse response
         return;
     }
 
-    String produtoNome = null;
-
+    String requestData = request.getReader().lines().reduce("", (acc, line) -> acc + line);
+    int quantidade;
     try {
-        // Conectar ao banco de dados
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "1212");
-        
-        PreparedStatement stmtProduto = connection.prepareStatement("SELECT nome FROM Produto WHERE codigo = ?");
-        stmtProduto.setString(1, codigo);
-        ResultSet rsProduto = stmtProduto.executeQuery();
+        quantidade = Integer.parseInt(requestData.replaceAll("\\D+", "")); // Extrai a quantidade do JSON
+    } catch (NumberFormatException e) {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quantidade inválida");
+        return;
+    }
 
-        if (rsProduto.next()) {
-            produtoNome = rsProduto.getString("nome");
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Produto não encontrado");
-            return;
-        }
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/estoque_db", "root", "1212")) {
+        PreparedStatement stmtSelect = connection.prepareStatement("SELECT quantidade FROM Produto WHERE codigo = ?");
+        stmtSelect.setString(1, codigo);
+        ResultSet rs = stmtSelect.executeQuery();
 
-        PreparedStatement stmtDelete = connection.prepareStatement("DELETE FROM Produto WHERE codigo = ?");
-        stmtDelete.setString(1, codigo);
-        int affectedRows = stmtDelete.executeUpdate();
+        if (rs.next()) {
+            int estoqueAtual = rs.getInt("quantidade");
+            if (estoqueAtual < quantidade) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Quantidade insuficiente no estoque");
+                return;
+            }
 
-        if (affectedRows > 0) {
+            int novoEstoque = estoqueAtual - quantidade;
+
+            if (novoEstoque > 0) {
+                // Atualiza a quantidade no banco
+                PreparedStatement stmtUpdate = connection.prepareStatement(
+                    "UPDATE Produto SET quantidade = ? WHERE codigo = ?"
+                );
+                stmtUpdate.setInt(1, novoEstoque);
+                stmtUpdate.setString(2, codigo);
+                stmtUpdate.executeUpdate();
+            } else {
+                // Exclui o produto se o estoque for 0
+                PreparedStatement stmtDelete = connection.prepareStatement(
+                    "DELETE FROM Produto WHERE codigo = ?"
+                );
+                stmtDelete.setString(1, codigo);
+                stmtDelete.executeUpdate();
+            }
+
             // Registra a movimentação de saída
             String sqlMovimentacao = "INSERT INTO Movimentacao (produtoNome, tipo, quantidade, dataHora) VALUES (?, ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlMovimentacao);
-            preparedStatement.setString(1, produtoNome); // Agora usamos o nome do produto
-            preparedStatement.setString(2, "saida");
-            preparedStatement.setInt(3, 1); // Supondo uma saída de quantidade 1
-            preparedStatement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
-            preparedStatement.executeUpdate();
+            PreparedStatement stmtMovimentacao = connection.prepareStatement(sqlMovimentacao);
+            stmtMovimentacao.setString(1, codigo); // Assume que o nome é o código (ou adapte conforme necessário)
+            stmtMovimentacao.setString(2, "saida");
+            stmtMovimentacao.setInt(3, quantidade);
+            stmtMovimentacao.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            stmtMovimentacao.executeUpdate();
 
-            response.setStatus(HttpServletResponse.SC_OK); // 200 OK
-            response.getWriter().println("{\"message\":\"Produto removido com sucesso\"}"); // Mensagem de sucesso
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().println("{\"message\":\"Remoção realizada com sucesso\"}");
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Produto não encontrado");
         }

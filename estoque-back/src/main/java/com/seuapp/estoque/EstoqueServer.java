@@ -1,10 +1,8 @@
 package com.seuapp.estoque;
 
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.hibernate.mapping.Set;
 import java.util.EnumSet;
 
 import jakarta.servlet.DispatcherType;
@@ -19,8 +17,9 @@ public class EstoqueServer {
         context.setContextPath("/");
         server.setHandler(context);
 
-        // Add the filter, and then use the provided FilterHolder to configure it
-        context.addFilter(CORSFilter.class, "/*", EnumSet.of(DispatcherType.INCLUDE, DispatcherType.REQUEST));
+        // Adiciona o filtro CORS para todas as requisições
+        context.addFilter(CORSFilter.class, "/*", 
+            EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE, DispatcherType.ERROR, DispatcherType.ASYNC));
 
         // Adiciona o servlet que gerenciará as requisições para produtos
         context.addServlet(new ServletHolder(new ProdutoServlet()), "/produtos/*");
