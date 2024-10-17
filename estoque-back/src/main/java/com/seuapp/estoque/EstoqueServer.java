@@ -1,6 +1,7 @@
 package com.seuapp.estoque;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import java.util.EnumSet;
@@ -16,6 +17,9 @@ public class EstoqueServer {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);
+
+        // Add the filter, and then use the provided FilterHolder to configure it
+        context.addFilter(CORSFilter.class, "/*", EnumSet.of(DispatcherType.INCLUDE, DispatcherType.REQUEST));
 
         // Adiciona o filtro CORS para todas as requisições
         context.addFilter(CORSFilter.class, "/*", 
